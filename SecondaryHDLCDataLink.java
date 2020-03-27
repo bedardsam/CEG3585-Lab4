@@ -142,7 +142,11 @@ public class SecondaryHDLCDataLink
 
 		// Wait for poll - need an RR with P bit - 1
 		
-		/*Completer cette partie*/
+		String p = "";
+		while(!p.equals("1")){
+			frame = getRRFrame(true);
+			p = frame.substring(5, 5);
+		}
 				
 		// Send the SDU
 		// After each transmission, check for an ACK (RR)
@@ -197,9 +201,16 @@ public class SecondaryHDLCDataLink
 	// or frame received is not an RR frame.
 	private String getRRFrame(boolean wait)
 	{
-		
-		/*Completer cette methode */
-		return(frame);
+		String frame = null;
+
+		do {
+			frame = getFrame(true);
+			if (!frame.substring(3, 4).equals("00")) {
+				frame = null;
+			}
+		} while (frame == null && wait);
+
+		return frame;
 	}
 
 	// For displaying the status of variables used
