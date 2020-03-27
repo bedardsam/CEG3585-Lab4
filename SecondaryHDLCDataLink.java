@@ -142,10 +142,10 @@ public class SecondaryHDLCDataLink
 
 		// Wait for poll - need an RR with P bit - 1
 		
-		String p = "";
-		while(!p.equals("1")){
+		String p;
+		while(!p.equals(HdlcDefs.P1)){
 			frame = getRRFrame(true);
-			p = frame.substring(5, 5);
+			p = String.valueOf(frame.charAt(HdlcDefs.PF_IX));
 		}
 				
 		// Send the SDU
@@ -205,7 +205,7 @@ public class SecondaryHDLCDataLink
 
 		do {
 			frame = getFrame(true);
-			if (!frame.substring(3, 4).equals("00")) {
+			if (!frame.substring(HdlcDefs.S_START, HdlcDefs.S_END).equals(HdlcDefs.RR_SS)) {
 				frame = null;
 			}
 		} while (frame == null && wait);
